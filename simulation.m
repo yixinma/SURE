@@ -1,10 +1,15 @@
-for sigma=0.1:0.1:2
-    %prompt='Please enter the rotation matrix R = ';
-    %R=input(prompt);
-    R0=[1 0 0; 0 1 0; 0 0 1];
+figure
+for sigma=0.1:0.1:5
+e=zeros(1,100);
+for g=1:100
+    %prompt='Please enter the rotation matrix T = ';	
+    %R0=input(prompt);
+    %R0=[1 0 0; 0 1 0; 0 0 1];
+    R0=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
     %prompt='Please enter the rotation matrix T = ';
-    %T=input(prompt);
-    T0=[1; 1; 1];
+    %T0=input(prompt);
+    %T0=[1; 1; 1];
+    T0=10*rand(3,1)-5;
     %prompt='Please enter the initial positions of tracking points in order: ';
     %initPos=input(prompt);
     initPos=[1 2 3; 1 1 2; 1 2 1];
@@ -67,12 +72,16 @@ for sigma=0.1:0.1:2
         end
     end
     
-    sigma
-    diffR=R-R0
-    diffT=T(:,1)-T0
+    diffR=R0-R;
+    diffT=T0-T(:,1);
     
-    hold on
-    errorbar(sigma, R0(1,1), diffR(1,1))
+    e(g)=sumabs(diffR)/9;   
+end
+Y=mean(e);
+L=mean(e)-std(e);
+U=mean(e)+std(e);
+hold on
+errorbar(sigma, Y, L, U, 'rx')
 end
 
 %{
