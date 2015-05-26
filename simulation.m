@@ -1,7 +1,11 @@
 figure
-for sigma=0.1:0.1:5
-e=zeros(1,100);
-for g=1:100
+numExp=50;
+for sigma=0:0.1:3
+eR=zeros(1,numExp);
+eT=zeros(1,numExp);
+ratioR=zeros(1,numExp);
+ratioT=zeros(1,numExp);
+for g=1:numExp
     %prompt='Please enter the rotation matrix T = ';	
     %R0=input(prompt);
     %R0=[1 0 0; 0 1 0; 0 0 1];
@@ -25,7 +29,7 @@ for g=1:100
             pts(j,:)=pt';
             pt=R0*pt+T0;
         end
-        noise=1/(sqrt(2*pi)*sigma)*exp(-pts.^2./(2*sigma^2));
+        noise=randn(t,3)*sigma;
         track{i}=pts+noise;
     end
 
@@ -75,14 +79,44 @@ for g=1:100
     diffR=R0-R;
     diffT=T0-T(:,1);
     
-    e(g)=sumabs(diffR)/9;   
+    eR(g)=sumabs(diffR)/9;
+    ratioR(g)=eR(g)/(sumabs(R0)/9);
+    
+    eT(g)=sumabs(diffT)/3;
+    ratioT(g)=eT(g)/(sumabs(T0)/3);
 end
-Y=mean(e);
-L=mean(e)-std(e);
-U=mean(e)+std(e);
+
+Y=mean(eR);
+L=mean(eR)-std(eR);
+U=mean(eR)+std(eR);
 hold on
+subplot(2,2,1)
 errorbar(sigma, Y, L, U, 'rx')
+
+Y=mean(eT);
+L=mean(eT)-std(eT);
+U=mean(eT)+std(eT);
+hold on
+subplot(2,2,3)
+errorbar(sigma, Y, L, U, 'bo')
+
+hold on 
+subplot(2,2,2)
+plot(sigma, mean(ratioR),'rx')
+
+hold on 
+subplot(2,2,4)
+plot(sigma, mean(ratioT),'bo')
 end
+
+subplot(2,2,1)
+title('R error vs. sigma')
+subplot(2,2,2)
+title('R error over R0 vs. sigma')
+subplot(2,2,3)
+title('T error vs. sigma')
+subplot(2,2,4)
+title('T error over T0  vs. sigma')
 
 %{
 color='rbgkymcw';
