@@ -4,7 +4,7 @@ global refErr
 global track
 global numPoint
 
-sigma=0;
+sigma=0.1;
 numSeg=floor(rand*3)+1;
 initPos=[1 2 3; 1 1 2; 1 2 1];
 numPoint=size(initPos,1);

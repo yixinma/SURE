@@ -5,7 +5,7 @@ function [error]=funcErr(n,T)
     global refErr
     if n==1
         if baseErr(1,T)==0
-            baseErr(n)=funcBase(1,T);
+            baseErr(1,T)=funcBase(1,T);
         end
         minErr(n)=baseErr(1,T);
     else
