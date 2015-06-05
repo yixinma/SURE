@@ -22,7 +22,7 @@ for seg=1:numSeg
     totalT=totalT+segLth(seg);
 end
 
-minErr=zeros(totalT,1);
+minErr=zeros(totalT-1,1);
 baseErr=zeros(totalT,totalT);
 refErr=zeros(totalT-1,totalT);
 
@@ -39,4 +39,10 @@ for i=1:numPoint
     track{i}=pts+noise;
 end
 
-minerr=funcErr((totalT-1),totalT);
+fnErr=funcErr(totalT-1,totalT);
+
+errTable=zeros(totalT-1,2);
+for i=1:totalT-1
+    errTable(i,1)=i;
+end
+errTable(:,2)=minErr;
