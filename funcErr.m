@@ -3,11 +3,13 @@ function [error]=funcErr(n,T)
     global minErr
     global baseErr
     global refErr
+    global simSegLth
     if n==1
         if baseErr(1,T)==0
             baseErr(1,T)=funcBase(1,T);
         end
         minErr(n)=baseErr(1,T);
+        simSegLth(n,1)=T;
     else
         for t=2:(T-3)
             if refErr(n-1,t)==0
@@ -19,8 +21,10 @@ function [error]=funcErr(n,T)
             error=refErr(n-1,t)+baseErr(t,T);
             if minErr(n)==0
                 minErr(n)=error;
+%                simSegLth(n,counts)=t;
             elseif error<minErr(n)
                 minErr(n)=error;
+%                simSegLth(n,counts)=t;                
             end
         end
     end
