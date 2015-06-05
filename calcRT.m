@@ -40,12 +40,3 @@ end
 
 R
 T
-
-%testing part
-time1=[1; 2; 3];
-time2=R*test1+T
-time3=R*test2+T
-time4=R*test3+T
-time5=R*test4+T
-time6=R*test5+T
-time7=R*test6+T
