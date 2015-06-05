@@ -13,7 +13,7 @@ function [error]=funcErr(n,T)
     else
         for t=2:(T-3)
             if refErr(n-1,t)==0
-                refErr(n-1,t)=funcErr(n-1,T);
+                refErr(n-1,t)=funcErr(n-1,t);
             end
             if baseErr(t,T)==0
                 baseErr(t,T)=funcBase(t,T);
