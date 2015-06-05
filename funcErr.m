@@ -19,12 +19,13 @@ function [error]=funcErr(n,T)
                 baseErr(t,T)=funcBase(t,T);
             end
             error=refErr(n-1,t)+baseErr(t,T);
+            simSegLth(n,:)=simSegLth(n-1,:);
             if minErr(n)==0
                 minErr(n)=error;
-%                simSegLth(n,counts)=t;
+                simSegLth(n,n)=t;
             elseif error<minErr(n)
                 minErr(n)=error;
-%                simSegLth(n,counts)=t;                
+                simSegLth(n,n)=t;                
             end
         end
     end
