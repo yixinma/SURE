@@ -2,17 +2,17 @@
 function [error,part]=funcErr(n,T)
     global minErr
     global baseErr
+    global zeroBaseErr
     global refErr
     global simSegLth
     global refPart
     if n==1
-        if baseErr(1,T)==0
-            baseErr(1,T)=funcBase(1,T);
+        if zeroBaseErr(T)==0
+            zeroBaseErr(T)=funcBase(0,T);
         end
-        minErr(1,T)=baseErr(1,T);
-        simSegLth(1,T)=T;
+        minErr(n,T)=zeroBaseErr(T);
     else
-        for t=1:T
+        for t=(T-1):-1:(n-1)
             if refErr(n-1,t)==0
                 [refErr(n-1,t),refPart(n-1,t)]=funcErr(n-1,t);
             end
