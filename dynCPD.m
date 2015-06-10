@@ -5,7 +5,7 @@ global simSegLth
 global track
 global numPoint
 
-sigma=0.001;
+sigma=0.0001;
 numSeg=floor(rand*3)+1;
 initPos=[1 2 3; 1 1 2; 1 2 1];
 numPoint=size(initPos,1);
@@ -14,37 +14,39 @@ track=cell(numPoint);
 R=cell(numSeg);
 T=cell(numSeg);
 segLth=zeros(1,numSeg);
+rSegLth=zeros(1,numSeg);
 totalT=0;
 
 for seg=1:numSeg
     R{seg}=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
     T{seg}=10*rand(3,1)-5;  
-    segLth(seg)=floor(rand*5)+3;
+    segLth(seg)=floor(rand*5)+1;
+    rSegLth(seg)=3*segLth(seg);
     totalT=totalT+segLth(seg);
 end
 
-minErr=zeros(totalT-1,1);
+minErr=zeros(totalT,totalT);
 baseErr=zeros(totalT,totalT);
-refErr=zeros(totalT-1,totalT);
-simSegLth=zeros(totalT-1,totalT-1);
+refErr=zeros(totalT,totalT);
+simSegLth=zeros(totalT,totalT);
 
 for i=1:numPoint
-    pts=zeros(totalT,3);
+    pts=zeros(3*totalT,3);
     pt=(initPos(i,:))';
     for seg=1:numSeg
-        for j=1:segLth(seg)
+        for j=1:(3*segLth(seg))
             pts(j,:)=pt';
             pt=R{seg}*pt+T{seg};
         end
     end
-    noise=randn(totalT,3)*sigma;
+    noise=randn(3*totalT,3)*sigma;
     track{i}=pts+noise;
 end
 
-funcErr(totalT-1,totalT);
+funcErr(totalT,totalT);
 
-errTable=zeros(totalT-1,2);
-for i=1:totalT-1
+errTable=zeros(totalT,2);
+for i=1:totalT
     errTable(i,1)=i;
 end
-errTable(:,2)=minErr;
+errTable(:,2)=minErr(:,totalT);

@@ -8,10 +8,10 @@ function [error]=funcErr(n,T)
         if baseErr(1,T)==0
             baseErr(1,T)=funcBase(1,T);
         end
-        minErr(n)=baseErr(1,T);
-        simSegLth(n,1)=T;
+        minErr(1,T)=baseErr(1,T);
+        simSegLth(1,T)=T;
     else
-        for t=2:(T-3)
+        for t=1:T
             if refErr(n-1,t)==0
                 refErr(n-1,t)=funcErr(n-1,t);
             end
@@ -19,15 +19,14 @@ function [error]=funcErr(n,T)
                 baseErr(t,T)=funcBase(t,T);
             end
             error=refErr(n-1,t)+baseErr(t,T);
-            simSegLth(n,:)=simSegLth(n-1,:);
-            if minErr(n)==0
-                minErr(n)=error;
-                simSegLth(n,n)=t;
-            elseif error<minErr(n)
-                minErr(n)=error;
-                simSegLth(n,n)=t;                
+            if minErr(n,T)==0
+                minErr(n,T)=error;
+                simSegLth(n,T)=t;
+            elseif error<minErr(n,T)
+                minErr(n,T)=error;
+                simSegLth(n,T)=t;                
             end
         end
     end
-    error=minErr(n);
+    error=minErr(n,T);
 end
