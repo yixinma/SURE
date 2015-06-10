@@ -1,9 +1,10 @@
 % Calculate minimum error recursively
-function [error]=funcErr(n,T)
+function [error,part]=funcErr(n,T)
     global minErr
     global baseErr
     global refErr
     global simSegLth
+    global refPart
     if n==1
         if baseErr(1,T)==0
             baseErr(1,T)=funcBase(1,T);
@@ -13,7 +14,7 @@ function [error]=funcErr(n,T)
     else
         for t=1:T
             if refErr(n-1,t)==0
-                refErr(n-1,t)=funcErr(n-1,t);
+                [refErr(n-1,t),refPart(n-1,t)]=funcErr(n-1,t);
             end
             if baseErr(t,T)==0
                 baseErr(t,T)=funcBase(t,T);
@@ -29,4 +30,5 @@ function [error]=funcErr(n,T)
         end
     end
     error=minErr(n,T);
+    part=simSegLth(n,T);
 end

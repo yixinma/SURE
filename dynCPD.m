@@ -2,6 +2,7 @@ global minErr
 global baseErr
 global refErr
 global simSegLth
+global refPart
 global track
 global numPoint
 
@@ -29,6 +30,7 @@ minErr=zeros(totalT,totalT);
 baseErr=zeros(totalT,totalT);
 refErr=zeros(totalT,totalT);
 simSegLth=zeros(totalT,totalT);
+refPart=zeros(totalT,totalT);
 
 for i=1:numPoint
     pts=zeros(3*totalT,3);
