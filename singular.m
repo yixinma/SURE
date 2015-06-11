@@ -1,6 +1,7 @@
 init=cell(2);
 init{1}=[0 0 0; 1 0 0; 0 1 0; 0 0 1];
-init{2}=[1 1 1; 1 1 0; 1 2 1; 2 1 1];
+init{2}=[0 0 0; 1 0 0; 0 1 0; 0 0 1];
+%init{2}=[1 1 1; 1 1 0; 1 2 1; 2 1 1];
 
 % R("Obj index","interval","row","column")
 % T("Obj index","interval","row","column")
@@ -19,21 +20,22 @@ T{2,2}=T{2,1};
 %}
 
 %Case 1: Revolute Pair
-%Rank 7; 7 significantly non-zero singular values
+%Rank 5 or 7; 5 or 7 significantly non-zero singular values
 %{
 R{1,1}=[1 0 0; 0 1 0; 0 0 1];
 R{1,2}=R{1,1};
+%R{2,1}=rotx(rand*4*pi-2*pi);
 R{2,1}=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
 R{2,2}=R{2,1};
 T{1,1}=[1 1 1]';
+%T{1,1}=[0 0 0]';
 T{1,2}=T{1,1};
-T{2,1}=[1 1 1]';
+T{2,1}=T{1,1};
 T{2,2}=T{2,1};
 %}
 
 %Case 2: Prismatic Pair
-%Rank 4; 4 significantly non-zero singular values
-%If the speed of transition changes, Rank 6; 6 significantly non-zero singular values
+%Rank 4; 4 significantly non-zero singular values even if the speed of relative transition changes
 %{
 R{1,1}=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
 R{1,2}=R{1,1};
@@ -60,11 +62,29 @@ T{2,2}=T{2,1};
 %}
 
 %Case 5: Spherical Pair
+%Rank 6; 6 significantly non-zero sigular values
 %{
+R{1,1}=[1 0 0; 0 1 0; 0 0 1];
+R{1,2}=R{1,1};
+R{2,1}=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
+R{2,2}=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);;
+T{1,1}=[0 0 0]';
+T{1,2}=T{1,1};
+T{2,1}=[0 0 0]';
+T{2,2}=T{2,1};
 %}
 
 %Case 6: Planar Pair
+%Rank 4; 4 significantly non-zero singular values
 %{
+R{1,1}=[1 0 0; 0 1 0; 0 0 1];
+R{1,2}=R{1,1};
+R{2,1}=[1 0 0; 0 1 0; 0 0 1];
+R{2,2}=R{2,1};
+T{1,1}=[0 0 0]';
+T{1,2}=T{1,1};
+T{2,1}=[1 1 0]';
+T{2,2}=[2 3 0]';
 %}
 
 %Case 7: Random
