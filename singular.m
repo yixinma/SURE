@@ -127,7 +127,6 @@ T{2,2}=[1 0 0]';
 %}
 
 interval=5;
-track=cell(2);
 kR=zeros(3*(1+2*interval),8);
 for i=1:2
     pts=zeros(3*(1+2*interval),4);
@@ -147,10 +146,8 @@ for i=1:2
             end
         end
     end
-    track{i}=pts;
+    kR(:,4*i-3:4*i)=pts;
 end
-kR(:,1:4)=track{1};
-kR(:,5:8)=track{2};
 
 kR
 rank(kR)
