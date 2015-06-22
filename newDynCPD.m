@@ -4,10 +4,10 @@ global refErr
 global simSegLth
 global track
 global numPoint
-
+              
 sigma=0.01;
 numSeg=floor(rand*5)+2;
-initPos=[1 2 3; 1 1 2; 1 2 1];
+initPos=[1 2 3; 1 1 2; 1 2 1; 3 4 1];
 numPoint=size(initPos,1);
 track=cell(numPoint);
 
@@ -53,9 +53,24 @@ for seg=1:maxSeg
 end
 
 errTable=zeros(maxSeg,2);
+errTable(:,2)=minErr(:,totalT+1);
+spCost=zeros(maxSeg,1);
+minSpCost=0;
+simNumSeg=0;
 for i=1:maxSeg
     errTable(i,1)=i;
+    spCost(i)=errTable(i,2)+10*sigma*i;
 end
-errTable(:,2)=minErr(:,totalT+1);
-errTable
-simSegLth
+[minSpcost,simNumSeg]=min(spCost);
+if simNumSeg==numSeg
+    disp('Correct!');
+else
+    disp('Wrong!');
+end
+
+chPt=zeros(1,simNumSeg);
+chPt(simNumSeg)=totalT+1;
+for i=simNumSeg:-1:2
+    chPt(i-1)=simSegLth(i,chPt(i));
+end
+chPt
