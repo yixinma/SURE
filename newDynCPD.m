@@ -56,7 +56,6 @@ errTable=zeros(maxSeg,2);
 errTable(:,2)=minErr(:,totalT+1);
 spCost=zeros(maxSeg,1);
 minSpCost=0;
-simNumSeg=0;
 for i=1:maxSeg
     errTable(i,1)=i;
     spCost(i)=errTable(i,2)+10*sigma*i;
