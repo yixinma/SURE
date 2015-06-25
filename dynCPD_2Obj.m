@@ -7,15 +7,15 @@ global numPoint
 global refRank
 
 sigma=0.01;
-initPos{1}=[0 0 0; 1 0 0; 0 1 0; 0 0 1; 1 1 1];
-initPos{2}=[1 2 3; 1 1 2; 1 2 1; 3 4 1; 3 2 2];
+initPos{1}=[0 0 0; 1 0 0; 0 1 0; 0 0 1];
+initPos{2}=[1 2 3; 1 1 2; 1 2 1; 3 4 1];
 numSeg=zeros(2,1);
 R=cell(2);
 T=cell(2);
 segLth=cell(2);
 
 for i=1:2
-    numSeg(i)=floor(rand*5)+10;
+    numSeg(i)=floor(rand*2)+4;
     numPoint(i)=size(initPos{i},1);
     R{i}=cell(numSeg(i));
     T{i}=cell(numSeg(i));
@@ -24,11 +24,14 @@ end
 
 time=zeros(2,1);
 partition=zeros(2, max(numSeg));
+ind=zeros(2,max(numSeg));
 for i=1:2
     for seg=1:numSeg(i)
-        R{i,seg}=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
-        T{i,seg}=10*rand(3,1)-5;  
-        segLth{i}(seg)=floor(rand*2)+1;
+        ind(i,seg)=floor(rand*7.99);
+        M=RTGnrt(ind(i,seg));
+        R{i,seg}=M(1:3,1:3);
+        T{i,seg}=M(1:3,4);  
+        segLth{i}(seg)=floor(rand*3)+2;
         if seg==1
             partition(i,seg)=segLth{i}(seg);
         else
@@ -46,40 +49,42 @@ for i=1:2
     end
 end
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 minErr=zeros(totalT,totalT+1);
 baseErr=zeros(totalT+1,totalT+1);
 refErr=zeros(totalT,totalT+1);
 simSegLth=zeros(totalT,totalT+1);
 refRank=zeros(totalT+1,totalT+1);
 
-Tr=zeros(3*(totalT+1),10);
-noise=randn(3*(totalT+1),10)*sigma;
-for h=1:2
-    pts=zeros(3*(totalT+1),5);
-    pt=initPos{h}.';
-    for k=1:5
-        for l=1:3
-            pts(l,k)=pt(l,k);
+Tr=zeros(3*(totalT+1),8);
+noise=randn(3*(totalT+1),8)*sigma;
+pt{1}=initPos{1}';
+pt{2}=initPos{2}';
+for i=1:2
+    for j=1:4
+        for k=1:3
+            Tr(k,j+4*(i-1))=pt{i}(k,j);
         end
     end
-    for seg=1:numSeg(h)
-        if seg==1
-            prePt=0;
-        else
-            prePt=prePt+segLth{h}(seg-1);
-        end
-        for j=1:segLth{h}(seg)
-            pt=R{h,seg}*pt+[T{h,seg} T{h,seg} T{h,seg} T{h,seg} T{h,seg}];
-            for k=1:5
-                for l=1:3
-                    pts(prePt*3+3*j+l,k)=pt(l,k);
-                end
-            end
+end
+
+count=[1,1];
+for t=1:totalT
+    for i=1:2
+        if t>partition(i,count(i))
+           count(i)=count(i)+1; 
         end
     end
-    Tr(:,(5*h-4):5*h)=pts;
+    pt{1}=R{1,count(1)}*pt{1}+[T{1,count(1)} T{1,count(1)} T{1,count(1)} T{1,count(1)}];
+    for i=1:4
+        pt{2}(:,i)=TG2L(pt{1},pt{2}(:,i));
+    end
+    pt{2}=R{2,count(2)}*pt{2}+[T{2,count(2)} T{2,count(2)} T{2,count(2)} T{2,count(2)}];
+    for i=1:4
+        pt{2}(:,i)=TL2G(pt{1},pt{2}(:,i));
+    end
+    for i=1:2
+        Tr(3*t+1:3*t+3,4*i-3:4*i)=pt{i};
+    end
 end
 
 for seg=1:totalT

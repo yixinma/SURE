@@ -11,7 +11,7 @@ end
 % Cylindrical pair rank 6
 % Spherical pair rank 6
 % Arbitrary rank 8
-if ind==1 || ind==2 || ind==3 || ind==4 || ind=7
+if ind==1 || ind==2 || ind==3 || ind==4 || ind==7
     A1=(rand(1,3)*2-1)*scale;
     A2=(rand(1,3)*2-1)*scale;
     a=A1(1);
