@@ -1,17 +1,17 @@
 function [M]=RTGnrt(ind)
 scale=5;
 M=zeros(4);
-% One rigid body rank 4
+% 0 One rigid body rank 4
 if ind==0
     M=[1 0 0 0; 0 1 0 0; 0 0 1 0; 0 0 0 1];
 end
-% Revolute pair rank 5
-% Prismatic pair rank 4
-% Screw pair rank 6
-% Cylindrical pair rank 6
-% Spherical pair rank 6
-% Arbitrary rank 8
-if ind==1 || ind==2 || ind==3 || ind==4 || ind==7
+% 1 Revolute pair rank 5
+% 2 Prismatic pair rank 4
+% 3 Screw pair rank 6
+% 4 Cylindrical pair rank 6
+% 5 Spherical pair rank 6
+% 7 Arbitrary rank 8
+if ind==1 || ind==2 || ind==3 || ind==4 || ind==5 || ind==7
     A1=(rand(1,3)*2-1)*scale;
     A2=(rand(1,3)*2-1)*scale;
     a=A1(1);
@@ -28,6 +28,10 @@ if ind==1 || ind==2 || ind==3 || ind==4 || ind==7
     k=(rand*2-1)*scale;
     if ind==2
         M=[1 0 0 k*u; 0 1 0 k*v; 0 0 1 k*w; 0 0 0 1]; 
+    elseif ind==5
+        M(1:3,1:3)=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
+        M(1:3,4)=[0; 0; 0];
+        M(4,1:4)=[0 0 0 1];
     else 
         M(1,1)=(u^2+(v^2+w^2)*cos(theta))/L^2;
         M(1,2)=(u*v*(1-cos(theta))-w*L*sin(theta))/L^2;
@@ -54,7 +58,7 @@ if ind==1 || ind==2 || ind==3 || ind==4 || ind==7
         M(3,4)=M(3,4)+rand;
     end
 end
-% Planar pair rank 4
+% 6 Planar pair rank 4
 if ind==6
     A1=(rand(1,3)*2-1)*scale;
     A2=(rand(1,3)*2-1)*scale;

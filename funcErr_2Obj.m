@@ -9,7 +9,7 @@ function [error]=funcErr_2Obj(n,T)
             minErr(1,T)=funcBase_2Obj(1,T);
         end
     else
-        for t=T-2:-1:n
+        for t=T-1:-1:n
             if refErr(n-1,t)==0
                 refErr(n-1,t)=funcErr_2Obj(n-1,t);
             end
