@@ -4,12 +4,16 @@ function [error]=funcErr_2Obj(n,T)
     global baseErr
     global refErr
     global simSegLth
+    disp('n=');
+    disp(n);
+    disp('T=');
+    disp(T);
     if n==1
         if minErr(1,T)==0
             minErr(1,T)=funcBase_2Obj(1,T);
         end
     else
-        for t=T-1:-1:n
+        for t=T-2:-1:n+1
             if refErr(n-1,t)==0
                 refErr(n-1,t)=funcErr_2Obj(n-1,t);
             end
@@ -24,6 +28,7 @@ function [error]=funcErr_2Obj(n,T)
                 minErr(n,T)=error;
                 simSegLth(n,T)=t;                
             end
+            %disp(simSegLth(n,T));
         end
     end
     error=minErr(n,T);
