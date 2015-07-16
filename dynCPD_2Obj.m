@@ -1,3 +1,5 @@
+load('data8.mat')
+
 global minErr
 global baseErr
 global refErr
@@ -11,9 +13,9 @@ refErr=zeros(totalT,totalT+1);
 simSegLth=zeros(totalT,totalT+1);
 refRank=zeros(totalT+1,totalT+1);
 
-funcErr_2Obj(8,17);
+%funcErr_2Obj(8,17);
 
-%{
+%
 for seg=1:floor(totalT/2)
     funcErr_2Obj(seg,totalT+1);
 end

@@ -2,10 +2,13 @@
 function [berror]=funcBase_2Obj(a,b)
     global Tr
     global refRank
+    %noise=randn(4*(17+1),12)*0.0001; %%%%%%%
+    %Trr=Tr+noise;
     disp(a);
     disp(b);
     diagV=svd(Tr(4*a-3:4*b,:));
-    %r=rank(Tr(4*a-3:4*b,:));
+    r=rank(Tr(4*a-3:4*b,:));
+    disp(r);
     %{
     if r<=3
         disp('rank');
@@ -24,14 +27,13 @@ function [berror]=funcBase_2Obj(a,b)
     end
     %}
     %diagV=sort(nonzeros(diagV));
-    diagV=sort(diagV);
-    lamda=0.001;
-    berror=lamda*exp(8)*(b-a);
-    simRank=8;
-    err=zeros(7,1);
-    lerr=zeros(7,1);
-    for rk=7:-1:4
-        for i=1:(8-rk)
+    diagV=sort(diagV,'descend');
+    lamda=0.1;
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    err=zeros(8,1);
+    lerr=zeros(8,1);
+    for rk=8:-1:4
+        for i=rk+1:size(diagV)
             err(rk)=err(rk)+diagV(i)^2;
         end
         %{
@@ -42,17 +44,26 @@ function [berror]=funcBase_2Obj(a,b)
             end
         end
         %}
-        lerr(rk)=err(rk)+lamda*exp(rk)*(b-a);
+        lerr(rk)=err(rk)+lamda*rk^2; % *(b-a) is not for inside judgement
+    end
         %{
         disp(rk);
         disp(err(rk));
         disp(lerr(rk));
         %}
+    disp(diagV);
+    disp(err);
+    %disp(err(8));
+    %disp(err(7));
+    disp(lerr);
+    berror=lerr(8);
+    simRank=8;
+    for rk=7:-1:4
         if lerr(rk)<berror
             berror=lerr(rk);
             simRank=rk;
         end
     end        
-    berror=berror+2;
+    berror=berror+0;
     refRank(a,b)=simRank;
 end
