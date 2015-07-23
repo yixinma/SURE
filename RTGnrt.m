@@ -32,6 +32,11 @@ if ind==1 || ind==2 || ind==3 || ind==4 || ind==5 || ind==7
         M(1:3,1:3)=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
         M(1:3,4)=[0; 0; 0];
         M(4,1:4)=[0 0 0 1];
+    %
+    elseif ind==7
+        M(1:3,1:3)=rotx(rand*4*pi-2*pi)*roty(rand*4*pi-2*pi)*rotz(rand*4*pi-2*pi);
+        M(1:3,4)=100*rand(3,1);
+        M(4,1:4)=[0 0 0 1];
     else 
         M(1,1)=(u^2+(v^2+w^2)*cos(theta))/L^2;
         M(1,2)=(u*v*(1-cos(theta))-w*L*sin(theta))/L^2;
@@ -52,11 +57,13 @@ if ind==1 || ind==2 || ind==3 || ind==4 || ind==5 || ind==7
         M(2,4)=M(2,4)+k*v;
         M(3,4)=M(3,4)+k*w;
     end
+    %{
     if ind==7
-        M(1,4)=M(1,4)+rand;
-        M(2,4)=M(2,4)+rand;
-        M(3,4)=M(3,4)+rand;
+        M(1,4)=M(1,4)+rand*100;
+        M(2,4)=M(2,4)+rand*100;
+        M(3,4)=M(3,4)+rand*100;
     end
+    %}
 end
 % 6 Planar pair rank 4
 if ind==6

@@ -4,8 +4,8 @@ function [berror]=funcBase_2Obj(a,b)
     global refRank
     %noise=randn(4*(17+1),12)*0.0001; %%%%%%%
     %Trr=Tr+noise;
-    disp(a);
-    disp(b);
+    %disp(a);
+    %disp(b);
     diagV=svd(Tr(4*a-3:4*b,:));
     r=rank(Tr(4*a-3:4*b,:));
     disp(r);
@@ -28,7 +28,7 @@ function [berror]=funcBase_2Obj(a,b)
     %}
     %diagV=sort(nonzeros(diagV));
     diagV=sort(diagV,'descend');
-    lamda=0.1;
+    lamda=0.0001;
     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
     err=zeros(8,1);
     lerr=zeros(8,1);
@@ -51,7 +51,7 @@ function [berror]=funcBase_2Obj(a,b)
         disp(err(rk));
         disp(lerr(rk));
         %}
-    disp(diagV);
+%    disp(diagV);
     disp(err);
     %disp(err(8));
     %disp(err(7));
@@ -64,6 +64,6 @@ function [berror]=funcBase_2Obj(a,b)
             simRank=rk;
         end
     end        
-    berror=berror+0;
+    berror=berror+0.0000001;
     refRank(a,b)=simRank;
 end

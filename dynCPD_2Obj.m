@@ -1,4 +1,4 @@
-load('data8.mat')
+load('newdata2.mat')
 
 global minErr
 global baseErr
